@@ -1,0 +1,1 @@
+CREATE TABLE weather_history (weather_id IDENTITY, weather_value VARCHAR, weather_date DATE, PRIMARY KEY (weather_id))

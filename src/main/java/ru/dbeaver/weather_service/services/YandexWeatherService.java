@@ -9,6 +9,7 @@ import ru.dbeaver.weather_service.web.clients.WeatherClient;
 import ru.dbeaver.weather_service.web.dto.WeatherDto;
 
 import java.time.LocalDate;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public final class YandexWeatherService implements WeatherService {
@@ -33,16 +34,17 @@ public final class YandexWeatherService implements WeatherService {
         final var now = LocalDate.now();
         final var currentWeather = repository.findWeatherByDate(now);
         if (currentWeather.isPresent()) return weatherMapper.map(currentWeather.get());
-        return requestWeatherWithDate(now);
-    }
 
-    private WeatherDto requestWeatherWithDate(final LocalDate date) {
-        return client.request()
-                .thenApply(this::validateWeather)
-                .thenApplyAsync(dtoMapper::map)
-                .thenApply(w -> saveWeatherWithDate(date, w))
+        return requestWeather()
+                .thenApply(weather -> saveWeatherWithDate(now, weather))
                 .thenApplyAsync(weatherMapper::map)
                 .join();
+    }
+
+    private CompletableFuture<Weather> requestWeather() {
+        return client.request()
+                .thenApply(this::validateWeather)
+                .thenApplyAsync(dtoMapper::map);
     }
 
     private WeatherDto validateWeather(final WeatherDto dto) {

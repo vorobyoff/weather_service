@@ -1,5 +1,7 @@
 package ru.dbeaver.weather_service.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public final class WeatherDto {
 
     private static final WeatherDto NULL = new WeatherDto(null);
@@ -10,9 +12,10 @@ public final class WeatherDto {
     }
 
     public static WeatherDto empty() {
-        return new WeatherDto(null);
+        return NULL;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return this == NULL;
     }

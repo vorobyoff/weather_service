@@ -22,13 +22,13 @@ public final class YandexWebClient extends WeatherClient {
 
     @Override
     protected HttpRequest getRequest() {
-        return HttpRequest.newBuilder().GET()
+        return HttpRequest.newBuilder()
                 .uri(URI.create("https://yandex.ru/"))
                 .build();
     }
 
     @Override
-    protected WeatherDto parse(final InputStream content) {
-        return parser.parse(content);
+    protected WeatherDto parse(final InputStream in) {
+        return parser.parse(in);
     }
 }

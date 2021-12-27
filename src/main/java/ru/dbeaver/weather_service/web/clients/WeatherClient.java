@@ -25,5 +25,5 @@ public abstract class WeatherClient {
 
     protected abstract HttpRequest getRequest();
 
-    protected abstract WeatherDto parse(final InputStream content);
+    protected abstract WeatherDto parse(final InputStream in);
 }
